@@ -1,17 +1,11 @@
 import mongoose, { Document } from "mongoose";
 
-type QuestionUpVote = {
-    userId: mongoose.Schema.Types.ObjectId;
-    counter: number
-}
-
 export interface QuestionDetails extends Document{
     userId: mongoose.Schema.Types.ObjectId;
     company: string;
     language: string;
     role: string;
     question: string;
-    upVote?: QuestionUpVote;
     solution?: string;
     createdAt?: Date;
 }
@@ -27,11 +21,6 @@ const questionSchema = new mongoose.Schema<QuestionDetails>({
     },
     language: {
         type: String
-    },
-    upVote: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        counter: Number
     },
     role: {
         type: String,
