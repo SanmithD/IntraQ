@@ -20,7 +20,7 @@ export const UseQuestionStore = create<Question>((set) => ({
   postQuestion: async (data) => {
     set({ isQuestionLoading: true });
     try {
-      await axios.post(`/api/Question`, data, {
+      await axios.post(`/api/Questions`, data, {
         withCredentials: true,
       });
       toast.success("Question posted successfully");
@@ -50,10 +50,11 @@ export const UseQuestionStore = create<Question>((set) => ({
   getAllQuestions: async (limit) => {
     set({ isQuestionLoading: true });
     try {
-      const res = await axios.get(`/api/Question?limit=${limit}`, {
+      const res = await axios.get(`/api/Questions?limit=${limit}`, {
         withCredentials: true,
       });
-      set({ questions: res.data.data });
+      set({ questions: res.data.res });
+      console.log(res.data)
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message || "Failed to fetch questions");

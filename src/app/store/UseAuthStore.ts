@@ -26,8 +26,7 @@ export const UseAuthStore = create<User>((set, get) => ({
     set({ isLoading: true });
     try {
         const res = await axios.get(`/api/User`,{ withCredentials: true });
-        console.log(res.data);
-        set({ isLoading: false });
+        set({ isLoading: false, auth: res.data?.profile });
     } catch (error) {
         console.log(error);
         const err = error as AxiosError<{ message: string }>;

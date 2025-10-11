@@ -1,9 +1,11 @@
-import LoginBtn from "@/components/LoginBtn";
+import { lazy } from "react";
+
+const MainPage = lazy(()=>import("./pages/Home/page"))
 
 export default function Home() {
   return (
     <div>
-      <LoginBtn/>
+      <MainPage/>
     </div>
   );
 }
