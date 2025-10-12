@@ -11,7 +11,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full shadow-sm border-b border-gray-200">
+    <nav className="w-full shadow-sm bg-gradient-to-br from-gray-300 via-gray-400/20 to-red-400/20 border-gray-200">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         <div
           onClick={() => router.push("/")}

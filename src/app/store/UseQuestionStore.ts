@@ -35,7 +35,7 @@ export const UseQuestionStore = create<Question>((set) => ({
   updateQuestion: async (id, data) => {
     set({ isQuestionLoading: true });
     try {
-      await axios.patch(`/api/Question/${id}`, data, {
+      await axios.patch(`/api/Questions/${id}`, data, {
         withCredentials: true,
       });
       toast.success("Question updated successfully");
@@ -54,7 +54,6 @@ export const UseQuestionStore = create<Question>((set) => ({
         withCredentials: true,
       });
       set({ questions: res.data.res });
-      console.log(res.data)
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message || "Failed to fetch questions");
@@ -66,10 +65,10 @@ export const UseQuestionStore = create<Question>((set) => ({
   getQuestionById: async (id) => {
     set({ isQuestionLoading: true });
     try {
-      const res = await axios.get(`/api/Question/${id}`, {
+      const res = await axios.get(`/api/Questions/${id}`, {
         withCredentials: true,
       });
-      set({ questions: [res.data.data] }); 
+      set({ questions: [res.data.res] }); 
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message || "Question not found");
@@ -81,12 +80,12 @@ export const UseQuestionStore = create<Question>((set) => ({
   deleteQuestion: async (id) => {
     set({ isQuestionLoading: true });
     try {
-      await axios.delete(`/api/Question/${id}`, {
+      await axios.delete(`/api/Questions/${id}`, {
         withCredentials: true,
       });
       toast.success("Question deleted successfully");
       set((state) => ({
-        questions: state.questions?.filter((q) => q.id !== id) || null,
+        questions: state.questions?.filter((q) => q._id !== id) || null,
       }));
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;

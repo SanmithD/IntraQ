@@ -3,10 +3,11 @@ import mongoose, { Document } from "mongoose";
 export interface UpVote extends Document {
   questionId: mongoose.Schema.Types.ObjectId;
   userId: mongoose.Schema.Types.ObjectId;
-  upVotes?: number;
-  downVotes?: number;
+  upVote?: number;
+  downVote?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  currentVote?: string;
 }
 
 const upVoteSchema = new mongoose.Schema<UpVote>(
@@ -21,13 +22,18 @@ const upVoteSchema = new mongoose.Schema<UpVote>(
       ref: "User",
       required: true,
     },
-    upVotes: {
+    upVote: {
       type: Number,
       default: 0,
     },
-    downVotes: {
+    downVote: {
       type: Number,
       default: 0,
+    },
+    currentVote: { 
+      type: String, 
+      enum: ["up", "down", null], 
+      default: null 
     },
   },
   { timestamps: true }

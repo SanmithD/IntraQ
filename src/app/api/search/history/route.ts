@@ -7,7 +7,7 @@ export const GET = async(req: NextRequest) =>{
     try {
         const url = new URL(req.url);
         const limit = parseInt(url.searchParams.get('limit') || '10');
-        const res = await historyModel.find({ userId }).populate('userId').limit(limit).sort({ createdAt: -1});
+        const res = await historyModel.find({ userId }).populate('questionId').populate('userId').limit(limit).sort({ createdAt: -1});
 
         if(!res) return NextResponse.json({ message: "Not found" },{ status: 404 });
 

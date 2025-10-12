@@ -1,11 +1,14 @@
-import { HistoryDetails } from "@/types/HistoryTypes";
+import { HistoryDetails, SearchHistory } from "@/types/HistoryTypes";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
 interface Search {
   isSearchLoading: boolean;
+  isDeleteLoading: boolean;
+  isHistoryLoading: boolean;
   recentSearches: HistoryDetails[] | null;
+  searchResult: SearchHistory[] | null;
 
   saveHistory: (id: string) => Promise<void>;
   getRecentSearches: (limit: number) => Promise<void>;
@@ -17,13 +20,15 @@ interface Search {
 
 export const UseSearchStore = create<Search>((set, get) => ({
   isSearchLoading: false,
+  isDeleteLoading: false,
+  isHistoryLoading: false,
   recentSearches: null,
+  searchResult: null,
 
   saveHistory: async (id) => {
     set({ isSearchLoading: true });
     try {
       await axios.post(`/api/search/saveHistory/${id}`, {}, { withCredentials: true });
-      toast.success("Search history saved");
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message || "Something went wrong");
@@ -46,15 +51,15 @@ export const UseSearchStore = create<Search>((set, get) => ({
   },
 
   getRecentSearches: async (limit) => {
-    set({ isSearchLoading: true });
+    set({ isHistoryLoading: true });
     try {
-      const res = await axios.get(`/api/search/recent?limit=${limit}`, { withCredentials: true });
-      set({ recentSearches: res.data.data });
+      const res = await axios.get(`/api/search/history?limit=${limit}`, { withCredentials: true });
+      set({ recentSearches: res.data.res, isHistoryLoading: false });
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message || "Unable to fetch recent searches");
     } finally {
-      set({ isSearchLoading: false });
+      set({ isHistoryLoading: false });
     }
   },
 
@@ -62,7 +67,7 @@ export const UseSearchStore = create<Search>((set, get) => ({
     set({ isSearchLoading: true });
     try {
       const res = await axios.get(`/api/search?query=${query}&limit=${limit}`, { withCredentials: true });
-      set({ recentSearches: res.data.data });
+      set({ searchResult: res.data.questionRes, isSearchLoading: false });
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message || "Search failed");
@@ -74,9 +79,8 @@ export const UseSearchStore = create<Search>((set, get) => ({
   deleteAllRecentHistory: async () => {
     set({ isSearchLoading: true });
     try {
-      await axios.delete(`/api/search/recent`, { withCredentials: true });
-      toast.success("All search history deleted");
-      set({ recentSearches: [] });
+      await axios.delete(`/api/search`, { withCredentials: true });
+      set({ recentSearches: [], isSearchLoading: false });
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message || "Failed to delete history");
@@ -86,18 +90,18 @@ export const UseSearchStore = create<Search>((set, get) => ({
   },
 
   deleteRecentById: async (id) => {
-    set({ isSearchLoading: true });
+    set({ isDeleteLoading: true });
     try {
-      await axios.delete(`/api/search/recent/${id}`, { withCredentials: true });
-      toast.success("History deleted");
+      await axios.delete(`/api/search/saveHistory/${id}`, { withCredentials: true });
       set((state) => ({
-        recentSearches: state.recentSearches?.filter((item) => item.id !== id) || null,
+        recentSearches: state.recentSearches?.filter((item) => item._id !== id) || null,
+        isDeleteLoading: false
       }));
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message || "Failed to delete history");
     } finally {
-      set({ isSearchLoading: false });
+      set({ isDeleteLoading: false });
     }
   },
 }));

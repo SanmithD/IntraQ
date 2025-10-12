@@ -7,40 +7,112 @@ export const PATCH = async (
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) => {
-  const { id: questionId } = await context.params;
-  const userId = await authorization();
-  const body = await req.json();
-
-  if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
-
   try {
+    // Extract and validate questionId
+    const { id: questionId } = await context.params;
+    
+    if (!questionId || typeof questionId !== 'string') {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: "Invalid question ID provided" 
+        }, 
+        { status: 400 }
+      );
+    }
+
+    // Authorize user
+    const userId = await authorization();
+    if (!userId) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: "Authentication required" 
+        }, 
+        { status: 401 }
+      );
+    }
+
+    // Parse and validate request body
+    let body;
+    try {
+      body = await req.json();
+    } catch (parseError) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: "Invalid JSON payload" 
+        }, 
+        { status: 400 }
+      );
+    }
+
+    const { type } = body;
+    
+    // Validate vote type
+    if (!type || !['up', 'down'].includes(type)) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: "Vote type must be 'up' or 'down'" 
+        }, 
+        { status: 400 }
+      );
+    }
+
+    // Connect to database
     await connectDB();
 
-    const { type } = body; 
-
+    // Find existing vote
     let existingVote = await voteModel.findOne({ questionId, userId });
 
-    if (existingVote) {
-      if (type === "up") {
-        existingVote.upVotes = (existingVote.upVotes || 0) + 1;
-      } else if (type === "down") {
-        existingVote.downVotes = (existingVote.downVotes || 0) + 1;
-      }
-      await existingVote.save();
-    } else {
+    if (!existingVote) {
+      // Create new vote
       existingVote = await voteModel.create({
         questionId,
         userId,
-        upVotes: type === "up" ? 1 : 0,
-        downVotes: type === "down" ? 1 : 0,
+        upVote: type === "up" ? 1 : 0,
+        downVote: type === "down" ? 1 : 0,
+        currentVote: type,
       });
+    } else {
+      // Handle vote toggle or switch
+      if (existingVote.currentVote === type) {
+        // Same vote → remove it (toggle off)
+        existingVote.upVote = 0;
+        existingVote.downVote = 0;
+        existingVote.currentVote = null;
+      } else {
+        // Different vote → switch
+        if (type === "up") {
+          existingVote.upVote = 1;
+          existingVote.downVote = 0;
+        } else {
+          existingVote.upVote = 0;
+          existingVote.downVote = 1;
+        }
+        existingVote.currentVote = type;
+      }
+      
+      await existingVote.save();
     }
 
-    return NextResponse.json({ data: existingVote }, { status: 200 });
-  } catch (error) {
-    console.log("Server error", error);
     return NextResponse.json(
-      { message: "Server error" },
+      { 
+        success: true, 
+        data: existingVote,
+        message: "Vote updated successfully"
+      }, 
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error("Vote controller error:", error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        message: "Internal server error" 
+      }, 
       { status: 500 }
     );
   }

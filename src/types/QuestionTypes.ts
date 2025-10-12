@@ -1,7 +1,7 @@
 import { AuthDetails } from "@/app/store/UseAuthStore";
 
 export type QuestionDetails ={
-    id?: string;
+    _id?: string;
     userId?: AuthDetails;
     company: string;
     language: string;

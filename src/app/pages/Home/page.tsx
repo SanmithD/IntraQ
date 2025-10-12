@@ -3,9 +3,12 @@
 import { UseQuestionStore } from "@/app/store/UseQuestionStore";
 import { QuestionDetails } from "@/types/QuestionTypes";
 import { Building2, Calendar, Code2, MessageSquare, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function Home() {
+
+  const router = useRouter();
   const [limit, setLimit] = useState(10);
   const questions = UseQuestionStore((state) => state.questions);
   const isQuestionLoading = UseQuestionStore(
@@ -22,7 +25,6 @@ function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-lg mb-6">
             <MessageSquare className="w-8 h-8 text-white" />
@@ -38,8 +40,9 @@ function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6 mb-8">
           {safeQuestions.map((question) => (
             <div
-              key={question.id}
-              className="bg-sky-100 hover:bg-sky-50 active:animate-ping rounded-2xl shadow-lg border cursor-pointer border-slate-300 hover:shadow-xl transition-all duration-300 overflow-hidden"
+              key={question._id}
+              onClick={()=>router.push(`/pages/Questions/${question._id}`)}
+              className="bg-gradient-to-br from-sky-100 via-gray-100/30 to-amber-400/50 hover:bg-sky-50 active:animate-ping rounded-2xl shadow-lg border cursor-pointer border-slate-300 hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">

@@ -17,7 +17,7 @@ export const POST = async(req: NextRequest, context: { params: Promise<{ id: str
        });
        
        if(!res) return NextResponse.json({ message: "Invalid request" },{ status: 400 });
-
+       await res.save();
        return NextResponse.json({ message: "saved" },{ status: 202 });
     } catch (error) {
         console.log("Server Error", error);
@@ -33,7 +33,7 @@ export const DELETE = async(req: NextRequest, context: { params: Promise<{ id: s
 
     try {
        await connectDB();
-       const res = await historyModel.findByIdAndDelete({id, userId});
+       const res = await historyModel.findByIdAndDelete(id, {id, userId});
        
        if(!res) return NextResponse.json({ message: "Invalid request" },{ status: 400 });
 
