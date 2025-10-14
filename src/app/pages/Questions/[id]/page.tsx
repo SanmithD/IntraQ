@@ -86,7 +86,7 @@ function OneQuestion({ params }: QuestionProp) {
             className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Questions
+            Back
           </span>
         </div>
 
@@ -193,7 +193,6 @@ function OneQuestion({ params }: QuestionProp) {
             </div>
           </div>
 
-          {/* Controllers */}
           <div className="w-full flex justify-center " >
             <Controllers id={question._id as string} />
           </div>

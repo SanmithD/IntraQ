@@ -6,7 +6,7 @@ function LoginBtn() {
     const { data: session } = useSession();
     if(!session?.user){
         return(
-            <button onClick={()=>signIn()} className='border px-4 py-2' >Login with Google</button>
+            <button onClick={()=>signIn("google")} className='border px-4 py-2' >Login with Google</button>
         )
     }
   return (

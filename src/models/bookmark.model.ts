@@ -10,14 +10,17 @@ export interface BookMark extends Document{
 const bookmarkSchema = new mongoose.Schema<BookMark>({
     questionId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Question'
+        ref: 'Question',
+        required: true 
     },
     userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        unique: true,
-        index: true
-    }
+        required: true  
+    },
 },{ timestamps: true });
+
+bookmarkSchema.index({ userId: 1, questionId: 1 }, { unique: true, sparse: true });
+
 
 export const bookmarkModel = mongoose.models.Bookmark || mongoose.model('Bookmark', bookmarkSchema);

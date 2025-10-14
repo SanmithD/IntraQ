@@ -12,7 +12,7 @@ export const PATCH = async(req: NextRequest, context: { params: Promise<{ id: st
         const existingQuestion = await bookmarkModel.findOne({ questionId, userId });
 
         if(existingQuestion){
-            await bookmarkModel.findByIdAndDelete({ questionId, userId });
+            await bookmarkModel.findOneAndDelete({ questionId, userId });
             return NextResponse.json({ message: "Bookmark removed" },{ status: 202 });
         }else{
             const newBook = new bookmarkModel({

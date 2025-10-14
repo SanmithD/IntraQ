@@ -13,7 +13,7 @@ export const GET = async(req: NextRequest) =>{
         const url = new URL(req.url);
         const limit = parseInt(url.searchParams.get('limit') || '20');
 
-        const res = await bookmarkModel.find(userId).populate('userId').limit(limit).sort({ createdAt: -1 });
+        const res = await bookmarkModel.find({userId}).populate('questionId').populate('userId').limit(limit).sort({ createdAt: -1 });
 
         if(!res) return NextResponse.json({ message: "not found" },{ status: 404 });
 

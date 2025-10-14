@@ -1,6 +1,7 @@
 "use client";
 
 import { UseQuestionStore } from "@/app/store/UseQuestionStore";
+import Votes from "@/components/Votes";
 import { QuestionDetails } from "@/types/QuestionTypes";
 import { Building2, Calendar, Code2, MessageSquare, User } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,7 @@ function Home() {
   const isQuestionLoading = UseQuestionStore(
     (state) => state.isQuestionLoading
   );
+
   const getAllQuestions = UseQuestionStore((state) => state.getAllQuestions);
 
   useEffect(() => {
@@ -78,6 +80,10 @@ function Home() {
                       ? question.question.substring(0, 30) + "..."
                       : question.question}
                   </p>
+                </div>
+
+                <div className="text-black flex " >
+                  <Votes id={question._id as string} />
                 </div>
 
                 {/* Footer */}
