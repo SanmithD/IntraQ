@@ -49,11 +49,9 @@ export const DELETE = async(req: NextRequest, context: { params: Promise<{ id: s
     const userId = await authorization();
     if(!userId) return NextResponse.json({ message: "Unauthorized" },{ status: 403 });
 
-    const body = await req.json();
-    if(!body) return NextResponse.json({ message: "data is required" },{ status: 400 });
     try {
         await connectDB();
-        const updatedQuestion = await questionModel.findByIdAndDelete({ id, userId });
+        const updatedQuestion = await questionModel.findByIdAndDelete({ _id : id, userId });
         if(!updatedQuestion) return NextResponse.json({ message: "invalid request" },{ status: 400 });
 
         return NextResponse.json({ message: "Question deleted" },{ status: 202 });

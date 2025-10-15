@@ -9,6 +9,7 @@ type ControllersProp = {
 };
 
 function Controllers({ id }: ControllersProp) {
+
     const giveVote = UseControllerStore((state) => state.giveVote);
     const bookmark = UseControllerStore((state) => state.bookmark);
     const fetchVotes = UseControllerStore((state) => state.fetchVotes);
@@ -46,7 +47,6 @@ function Controllers({ id }: ControllersProp) {
 
     return (
         <div className="flex items-center gap-4 bg-white rounded-xl shadow-sm border border-slate-100 p-3">
-            {/* Upvote */}
             <button
                 onClick={() => handleVote("up")}
                 disabled={voteLoading !== null}
@@ -66,7 +66,6 @@ function Controllers({ id }: ControllersProp) {
                 </span>
             </button>
 
-            {/* Downvote */}
             <button
                 onClick={() => handleVote("down")}
                 disabled={voteLoading !== null}
@@ -86,7 +85,6 @@ function Controllers({ id }: ControllersProp) {
                 </span>
             </button>
 
-            {/* Bookmark */}
             <button
                 onClick={handleBookmark}
                 disabled={bookmarkLoading || isControllerLoading}

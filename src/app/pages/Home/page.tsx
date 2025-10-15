@@ -76,8 +76,8 @@ function Home() {
 
                 <div className="mb-4">
                   <p className={`text-slate-700 leading-relaxed`}>
-                    {question.question.length > 30
-                      ? question.question.substring(0, 30) + "..."
+                    {question.question.length > 150
+                      ? question.question.substring(0, 150) + "..."
                       : question.question}
                   </p>
                 </div>
@@ -86,7 +86,6 @@ function Home() {
                   <Votes id={question._id as string} />
                 </div>
 
-                {/* Footer */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center">
@@ -110,7 +109,6 @@ function Home() {
           ))}
         </div>
 
-        {/* Load More Button */}
         {safeQuestions.length >= limit && (
           <div className="text-center">
             <button
@@ -130,7 +128,6 @@ function Home() {
           </div>
         )}
 
-        {/* Empty State */}
         {safeQuestions.length === 0 && !isQuestionLoading && (
           <div className="text-center py-12">
             <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -145,7 +142,6 @@ function Home() {
           </div>
         )}
 
-        {/* Loading State */}
         {isQuestionLoading && safeQuestions.length === 0 && (
           <div className="text-center py-12">
             <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>

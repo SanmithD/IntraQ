@@ -43,7 +43,6 @@ function Votes({ id }: VotesProp) {
 
     return (
         <div className="flex items-center gap-4 p-3">
-            {/* Upvote */}
             <div className="flex items-center gap-2 px-3 py-2 transition-colors duration-200">
                 <ArrowBigUp className={`w-4 h-4 ${
                     votes.upVotes > 0 ? "text-blue-600" : "text-slate-500"

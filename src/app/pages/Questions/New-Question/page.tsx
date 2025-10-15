@@ -64,7 +64,6 @@ function NewQuestion() {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
-                  {/* Question */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="space-y-3">
                       <label className="block">

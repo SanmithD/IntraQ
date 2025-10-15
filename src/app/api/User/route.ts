@@ -49,10 +49,9 @@ export const PUT = async (req: NextRequest) => {
   try {
     await connectDB();
 
-    const profile = await userModel.findByIdAndUpdate(
-      userId,
-      { username: body.username },
-      { new: true }
+    const profile = await userModel.updateOne(
+      { _id: userId },
+      { $set: { username: body.username } }
     );
 
     if (!profile)

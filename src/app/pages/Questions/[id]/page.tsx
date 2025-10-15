@@ -127,7 +127,6 @@ function OneQuestion({ params }: QuestionProp) {
               </div>
             </div>
 
-            {/* Question Content */}
             <div className="prose prose-slate max-w-none">
               <h2 className="text-xl font-semibold text-slate-800 mb-4 flex items-center gap-3">
                 <MessageSquare className="w-5 h-5 text-primary" />
@@ -141,7 +140,6 @@ function OneQuestion({ params }: QuestionProp) {
             </div>
           </div>
 
-          {/* Solution Section */}
           <div className="p-8">
             <div className="prose prose-slate max-w-none">
               <h2 className="text-xl font-semibold text-slate-800 mb-4">
@@ -215,28 +213,6 @@ function OneQuestion({ params }: QuestionProp) {
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="mt-8 text-center">
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">
-              Want to contribute?
-            </h3>
-            <p className="text-slate-600 mb-4">
-              Share your own solution or create a new question for the
-              community.
-            </p>
-            <div className="flex gap-4 justify-center">
-              <Link href="/new-question" className="btn btn-primary">
-                <MessageSquare className="w-4 h-4" />
-                Ask New Question
-              </Link>
-              <Link href="/" className="btn btn-outline">
-                Browse More Questions
-              </Link>
             </div>
           </div>
         </div>

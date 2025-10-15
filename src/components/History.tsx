@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function History() {
-
-    const router = useRouter();
+  const router = useRouter();
   const [limit, setLimit] = useState(10);
   const deleteAllRecentHistory = UseSearchStore(
     (state) => state.deleteAllRecentHistory
@@ -78,10 +77,15 @@ function History() {
                 <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Search className="w-4 h-4 text-primary" />
                 </div>
-                <div onClick={()=>router.push(`/pages/Questions/${item.questionId._id}`)} className="flex-1 cursor-pointer min-w-0">
+                <div
+                  onClick={() =>
+                    router.push(`/pages/Questions/${item.questionId._id}`)
+                  }
+                  className="flex-1 cursor-pointer min-w-0"
+                >
                   <div className="flex items-center gap-2 text-xs text-slate-500">
                     <Clock className="w-3 h-3" />
-                    <span className="text-sm font-semibold text-slate-600" >
+                    <span className="text-sm font-semibold text-slate-600">
                       {item?.questionId?.question
                         ? item.questionId.question.length > 50
                           ? item.questionId.question.substring(0, 50) + "..."
@@ -102,7 +106,6 @@ function History() {
             </div>
           ))}
 
-          {/* Load More Button */}
           {safeRecentSearches.length >= limit && (
             <div className="pt-2">
               <button
@@ -126,7 +129,6 @@ function History() {
           )}
         </div>
       ) : (
-        /* Empty State */
         <div className="text-center py-8">
           <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
             <Clock className="w-6 h-6 text-slate-400" />
