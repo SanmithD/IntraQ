@@ -7,7 +7,7 @@ It allows users to **browse, post, and share interview questions** asked by real
 
 
 # Live link
-
+https://intra-q.vercel.app/
 
 ## 🧠 About
 
